@@ -135,7 +135,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
     private final Lazy<NavigationRepository> navigationRepository = inject(NavigationRepository.class);
     private final Lazy<BackgroundService> backgroundService = inject(BackgroundService.class);
     private final Lazy<ImageHelper> imageHelper = inject(ImageHelper.class);
-    private Lazy<UserPreferences> userPreferences = inject(UserPreferences.class);
+    private final Lazy<UserPreferences> userPreferences = inject(UserPreferences.class);
 
     private final PlaybackOverlayFragmentHelper helper = new PlaybackOverlayFragmentHelper(this);
 
@@ -632,17 +632,10 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
     }
 
     private void startFadeTimer() {
-
         mFadeEnabled = true;
         mHandler.removeCallbacks(mHideTask);
-        mHandler.postDelayed(mHideTask, userPreferences.getValue().get(UserPreferences.Companion.getPlaybackUiFadeTime()) * 100 );
+        mHandler.postDelayed(mHideTask, userPreferences.getValue().get(UserPreferences.Companion.getPlaybackUiFadeTime()) * 1000 );
     }
-
-//    private void startFadeTimer(int delay) {
-//        mFadeEnabled = true;
-//        mHandler.removeCallbacks(mHideTask);
-//        mHandler.postDelayed(mHideTask, delay);
-//    }
 
     @Override
     public void onResume() {

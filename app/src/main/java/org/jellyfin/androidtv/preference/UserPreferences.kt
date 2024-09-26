@@ -207,7 +207,11 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 
 		var zoomMode = intPreference("zoom_mode", 0)
 
-		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 60)
+		/**
+		 * Timeout for the playback UI before it fades out.
+		 */
+
+		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6)
 	}
 
 	init {

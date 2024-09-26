@@ -45,32 +45,18 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 				setTitle(R.string.lbl_tv_queuing)
 				bind(userPreferences, UserPreferences.mediaQueuingEnabled)
 			}
+
 			@Suppress("MagicNumber")
 			seekbar {
-				setTitle(R.string.pref_playback_ui_fade_time)
-				min = 5
-				max = 100
-				increment = 5
+				setTitle(R.string.lbl_playback_ui_fade_time)
+				min = 1
+				max = 10
+				increment = 1
 				valueFormatter = object : DurationSeekBarPreference.ValueFormatter() {
-					override fun display(value: Int): String = "${value.toDouble() / 10}s"
+					override fun display(value: Int): String = "${value}s"
 				}
 				bind(userPreferences, UserPreferences.playbackUiFadeTime)
 			}
-//			@Suppress("MagicNumber")
-//			list {
-//				setTitle("Interface fade time")
-//				entries = setOf(
-//					500, 1000, 1500, 2000, // 10<
-//					10, 20, 30, 60, // 100<
-//					120, 300
-//				).associate {
-//					val value = if (it == 0) getString(R.string.lbl_none)
-//					else TimeUtils.formatSeconds(context, it)
-//
-//					it.toString() to value
-//				}
-//				bind(userPreferences, UserPreferences.resumeSubtractDuration)
-//			}
 		}
 
 		category {
