@@ -5,11 +5,13 @@ import org.jellyfin.androidtv.R
 import org.jellyfin.androidtv.constant.getQualityProfiles
 import org.jellyfin.androidtv.preference.UserPreferences
 import org.jellyfin.androidtv.preference.constant.RefreshRateSwitchingBehavior
+import org.jellyfin.androidtv.ui.preference.custom.DurationSeekBarPreference
 import org.jellyfin.androidtv.ui.preference.dsl.OptionsFragment
 import org.jellyfin.androidtv.ui.preference.dsl.checkbox
 import org.jellyfin.androidtv.ui.preference.dsl.enum
 import org.jellyfin.androidtv.ui.preference.dsl.list
 import org.jellyfin.androidtv.ui.preference.dsl.optionsScreen
+import org.jellyfin.androidtv.ui.preference.dsl.seekbar
 import org.jellyfin.androidtv.util.TimeUtils
 import org.koin.android.ext.android.inject
 
@@ -43,6 +45,32 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 				setTitle(R.string.lbl_tv_queuing)
 				bind(userPreferences, UserPreferences.mediaQueuingEnabled)
 			}
+			@Suppress("MagicNumber")
+			seekbar {
+				setTitle(R.string.pref_playback_ui_fade_time)
+				min = 5
+				max = 100
+				increment = 5
+				valueFormatter = object : DurationSeekBarPreference.ValueFormatter() {
+					override fun display(value: Int): String = "${value.toDouble() / 10}s"
+				}
+				bind(userPreferences, UserPreferences.playbackUiFadeTime)
+			}
+//			@Suppress("MagicNumber")
+//			list {
+//				setTitle("Interface fade time")
+//				entries = setOf(
+//					500, 1000, 1500, 2000, // 10<
+//					10, 20, 30, 60, // 100<
+//					120, 300
+//				).associate {
+//					val value = if (it == 0) getString(R.string.lbl_none)
+//					else TimeUtils.formatSeconds(context, it)
+//
+//					it.toString() to value
+//				}
+//				bind(userPreferences, UserPreferences.resumeSubtractDuration)
+//			}
 		}
 
 		category {
