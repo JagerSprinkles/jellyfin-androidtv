@@ -212,6 +212,11 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 */
 
 		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6)
+
+		/**
+		 * Delay when starting video playback after loading the video player.
+		 */
+		var videoStartDelay = longPreference("video_start_delay", 750)
 	}
 
 	init {
