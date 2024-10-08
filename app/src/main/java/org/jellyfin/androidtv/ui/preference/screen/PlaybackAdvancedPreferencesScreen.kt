@@ -76,7 +76,7 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 
 			@Suppress("MagicNumber")
 			seekbar {
-				setTitle(R.string.lbl_video_start_delay)
+				setTitle(R.string.video_start_delay)
 				min = 0
 				max = 5_000
 				increment = 250
@@ -93,21 +93,6 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 			checkbox{
 				setTitle(R.string.pref_external_player)
 				bind(userPreferences, UserPreferences.useExternalPlayer)
-			}
-
-			@Suppress("MagicNumber")
-			list {
-				setTitle(R.string.lbl_zoom)
-				entries = mapOf(
-					0 to context.getString(R.string.lbl_fit),
-					1 to context.getString(R.string.lbl_auto_crop),
-					2 to context.getString(R.string.lbl_stretch),
-				).mapKeys { it.key.toString() }
-				bind {
-					get { userPreferences[UserPreferences.zoomMode].toString() }
-					set { value -> userPreferences[UserPreferences.zoomMode] = value.toInt() }
-					default { UserPreferences.zoomMode.defaultValue.toString() }
-				}
 			}
 		}
 
