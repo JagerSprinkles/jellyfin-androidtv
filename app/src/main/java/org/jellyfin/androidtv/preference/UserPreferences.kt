@@ -10,6 +10,7 @@ import org.jellyfin.androidtv.preference.constant.NextUpBehavior
 import org.jellyfin.androidtv.preference.constant.RatingType
 import org.jellyfin.androidtv.preference.constant.RefreshRateSwitchingBehavior
 import org.jellyfin.androidtv.preference.constant.WatchedIndicatorBehavior
+import org.jellyfin.androidtv.preference.constant.ZoomMode
 import org.jellyfin.preference.booleanPreference
 import org.jellyfin.preference.enumPreference
 import org.jellyfin.preference.floatPreference
@@ -212,16 +213,16 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		var mediaSegmentActions = stringPreference("media_segment_actions", "")
 
 		/**
-		 * Preferred behavior for zoom mode.
-		 */
-
-		var zoomMode = intPreference("zoom_mode", 0)
-
-		/**
 		 * Timeout for the playback UI before it fades out.
 		 */
 
 		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6)
+
+		/**
+		 * Preferred behavior for player aspect ratio (zoom mode).
+		 */
+
+		var playerZoomMode = enumPreference("player_zoom_mode", ZoomMode.ZOOM_FIT)
 	}
 
 	init {

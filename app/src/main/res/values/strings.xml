@@ -519,6 +519,7 @@
     <string name="prefer_exoplayer_ffmpeg_content">Use FFmpeg to decode audio, even if platform codecs are available.</string>
     <string name="lbl_playback_ui_fade_time">Playback UI Fade Time</string>
     <string name="lbl_video_start_delay">Video Start Delay</string>
+    <string name="pref_aspect_ratio">Aspect ratio</string>
     <string name="video_start_delay">Video start delay</string>
     <string name="pref_mediasegment_actions">Media segment actions</string>
     <string name="segment_action_nothing">Do nothing</string>
