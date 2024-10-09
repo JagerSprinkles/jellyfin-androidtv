@@ -203,6 +203,11 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		var screensaverAgeRatingRequired = booleanPreference("screensaver_agerating_required", true)
 
 		/**
+		 * Delay when starting video playback after loading the video player.
+		 */
+		var videoStartDelay = longPreference("video_start_delay", 0)
+
+		/**
 		 * Preferred behavior for player aspect ratio (zoom mode).
 		 */
 

@@ -75,6 +75,22 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 				bind(userPreferences, UserPreferences.refreshRateSwitchingBehavior)
 			}
 
+			@Suppress("MagicNumber")
+			seekbar {
+				setTitle(R.string.video_start_delay)
+				min = 0
+				max = 5_000
+				increment = 250
+				valueFormatter = object : DurationSeekBarPreference.ValueFormatter() {
+					override fun display(value: Int): String = "${value.toDouble() / 1000}s"
+				}
+				bind {
+					get { userPreferences[UserPreferences.videoStartDelay].toInt() }
+					set { value -> userPreferences[UserPreferences.videoStartDelay] = value.toLong() }
+					default { UserPreferences.videoStartDelay.defaultValue.toInt() }
+				}
+			}
+
 			checkbox{
 				setTitle(R.string.pref_external_player)
 				bind(userPreferences, UserPreferences.useExternalPlayer)
