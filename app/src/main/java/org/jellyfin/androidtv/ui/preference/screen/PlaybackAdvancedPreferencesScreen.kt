@@ -91,14 +91,14 @@ class PlaybackAdvancedPreferencesScreen : OptionsFragment() {
 				}
 			}
 
+			enum<ZoomMode> {
+				setTitle(R.string.default_video_zoom)
+				bind(userPreferences, UserPreferences.playerZoomMode)
+			}
+
 			checkbox{
 				setTitle(R.string.pref_external_player)
 				bind(userPreferences, UserPreferences.useExternalPlayer)
-			}
-
-			enum<ZoomMode> {
-				setTitle(R.string.pref_aspect_ratio)
-				bind(userPreferences, UserPreferences.playerZoomMode)
 			}
 		}
 

@@ -11,6 +11,8 @@ import org.jellyfin.androidtv.preference.constant.RatingType
 import org.jellyfin.androidtv.preference.constant.RefreshRateSwitchingBehavior
 import org.jellyfin.androidtv.preference.constant.WatchedIndicatorBehavior
 import org.jellyfin.androidtv.preference.constant.ZoomMode
+import org.jellyfin.androidtv.ui.playback.segment.MediaSegmentAction
+import org.jellyfin.androidtv.ui.playback.segment.toMediaSegmentActionsString
 import org.jellyfin.preference.booleanPreference
 import org.jellyfin.preference.enumPreference
 import org.jellyfin.preference.floatPreference
@@ -18,6 +20,7 @@ import org.jellyfin.preference.intPreference
 import org.jellyfin.preference.longPreference
 import org.jellyfin.preference.store.SharedPreferenceStore
 import org.jellyfin.preference.stringPreference
+import org.jellyfin.sdk.model.api.MediaSegmentType
 import kotlin.time.Duration.Companion.minutes
 
 /**
@@ -208,16 +211,27 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		var videoStartDelay = longPreference("video_start_delay", 0)
 
 		/**
+		 * The actions to take for each media segment type. Managed by the [MediaSegmentRepository].
+		 */
+		var mediaSegmentActions = stringPreference(
+			key = "media_segment_actions",
+			defaultValue = mapOf(
+				MediaSegmentType.INTRO to MediaSegmentAction.ASK_TO_SKIP,
+				MediaSegmentType.OUTRO to MediaSegmentAction.ASK_TO_SKIP,
+			).toMediaSegmentActionsString()
+		)
+
+		/**
 		 * Preferred behavior for player aspect ratio (zoom mode).
 		 */
-
-		var playerZoomMode = enumPreference("player_zoom_mode", ZoomMode.ZOOM_FIT)
+		var playerZoomMode = enumPreference("player_zoom_mode", ZoomMode.FIT)
 
 		/**
 		 * Timeout for the playback UI before it fades out.
 		 */
 
-		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6)
+		var playbackUiFadeTime = intPreference("playback_ui_fade_time"
+
 	}
 
 	init {
