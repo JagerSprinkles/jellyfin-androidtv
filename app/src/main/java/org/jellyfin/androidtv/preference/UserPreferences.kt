@@ -13,7 +13,6 @@ import org.jellyfin.androidtv.preference.constant.WatchedIndicatorBehavior
 import org.jellyfin.androidtv.preference.constant.ZoomMode
 import org.jellyfin.androidtv.ui.playback.segment.MediaSegmentAction
 import org.jellyfin.androidtv.ui.playback.segment.toMediaSegmentActionsString
-import org.jellyfin.androidtv.preference.constant.ZoomMode
 import org.jellyfin.preference.booleanPreference
 import org.jellyfin.preference.enumPreference
 import org.jellyfin.preference.floatPreference
@@ -211,6 +210,9 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 */
 		var videoStartDelay = longPreference("video_start_delay", 0)
 
+		/**
+		 * The actions to take for each media segment type. Managed by the [MediaSegmentRepository].
+		 */
 		var mediaSegmentActions = stringPreference(
 			key = "media_segment_actions",
 			defaultValue = mapOf(
@@ -228,9 +230,7 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 * Timeout for the playback UI before it fades out.
 		 */
 
-		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 0)
-
-
+		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6000)
 	}
 
 	init {
