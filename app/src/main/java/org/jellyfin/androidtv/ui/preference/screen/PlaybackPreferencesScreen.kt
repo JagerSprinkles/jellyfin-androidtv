@@ -69,6 +69,19 @@ class PlaybackPreferencesScreen : OptionsFragment() {
 
 			@Suppress("MagicNumber")
 			seekbar {
+				setTitle(R.string.skip_backward_length)
+				setContent(R.string.skip_backward_length)
+				min = 5_000
+				max = 30_000
+				increment = 5_000
+				valueFormatter = object : DurationSeekBarPreference.ValueFormatter() {
+					override fun display(value: Int) = "${value / 1000}s"
+				}
+				bind(userSettingPreferences, UserSettingPreferences.skipBackLength)
+			}
+
+			@Suppress("MagicNumber")
+			seekbar {
 				setTitle(R.string.skip_forward_length)
 				setContent(R.string.skip_forward_length)
 				min = 5_000

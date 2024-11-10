@@ -16,7 +16,8 @@ android {
 
 		// Release version
 		applicationId = "me.beans.jellyfork"
-		versionName = project.getVersionName()
+//		versionName = project.getVersionName()
+		versionName = "0.42.0"
 		versionCode = getVersionCode(versionName!!)
 		setProperty("archivesBaseName", "jellyfin-androidtv-v$versionName")
 	}
