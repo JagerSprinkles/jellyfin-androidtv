@@ -231,6 +231,11 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		 */
 
 		var playbackUiFadeTime = intPreference("playback_ui_fade_time", 6000)
+
+		/**
+		 * Enable TrickPlay in legacy player user interface while seeking.
+		 */
+		var trickPlayEnabled = booleanPreference("trick_play_enabled", false)
 	}
 
 	init {

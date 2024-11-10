@@ -9,7 +9,7 @@
     <string name="chapters">Hoofdstukken</string>
     <string name="lbl_settings">Voorkeuren</string>
     <string name="lbl_continue_watching">Verderkijken</string>
-    <string name="lbl_next_up">Hierna</string>
+    <string name="lbl_next_up">Als volgende</string>
     <string name="lbl_on_now">Nu bezig</string>
     <string name="lbl_views">Weergaven</string>
     <string name="lbl_by_letter">Op alfabet</string>
@@ -139,7 +139,7 @@
     <string name="lbl_album">Album</string>
     <string name="lbl_episodes">Afleveringen</string>
     <string name="lbl_enable_cinema_mode">Bioscoopmodus</string>
-    <string name="sum_enable_cinema_mode">Speel intro\'s en previews voordat een film begint</string>
+    <string name="sum_enable_cinema_mode">Speel beschikbare intro\'s en voorvertoningen voordat een film begint</string>
     <string name="lbl_playlists">Afspeellijsten</string>
     <string name="msg_items_added">" items toegevoegd"</string>
     <string name="lbl_add_to_queue">Toevoegen aan wachtrij</string>
@@ -223,7 +223,7 @@
     <string name="pref_next_up_timeout_summary">Hoe lang te wachten voordat het volgende item wordt afgespeeld</string>
     <string name="pref_about_title">Over</string>
     <string name="pref_app_theme">App-thema</string>
-    <string name="pref_next_up_timeout_title">Tijdsduur timer \'hierna\'</string>
+    <string name="pref_next_up_timeout_title">Tijdsduur timer \'als volgende\'</string>
     <string name="pref_theme_emerald">Klassiek smaragd</string>
     <string name="pref_theme_dark">Donker (standaard)</string>
     <string name="grid_direction_vertical">Verticaal</string>
@@ -380,8 +380,8 @@
     <string name="licenses_link_description">Bekijk de licenties van de bibliotheken die door de Jellyfin-app worden gebruikt</string>
     <string name="server_issue_unsupported_version">Server gebruikt niet-ondersteunde versie %1$s</string>
     <string name="lbl_playback_speed">Afspeelsnelheid</string>
-    <string name="pref_show_backdrop_description">Verander achtergrondafbeelding naar geselecteerde items</string>
-    <string name="pref_playback_description">Beeld, ondertiteling, live-tv, hierna</string>
+    <string name="pref_show_backdrop_description">Achtergrond aanpassen aan geselecteerd item</string>
+    <string name="pref_playback_description">Beeld, ondertiteling, live-tv, als volgende</string>
     <string name="pref_customization_description">Thema, startpagina, knoppen</string>
     <string name="server_issue_ssl_handshake">SSL-handshake mislukt</string>
     <string name="server_issue_timeout">Verbindingstime-out</string>
@@ -548,19 +548,14 @@
     <string name="scheduled_in_next_24_hours">Komende 24 uur ingepland</string>
     <string name="lbl_subtitle_text_color">Tekstkleur ondertiteling</string>
     <string name="lbl_subtitle_text_stroke_color">Randkleur ondertiteling</string>
-    <string name="pref_subtitles_size_small">Klein</string>
-    <string name="pref_subtitles_size_normal">Normaal</string>
-    <string name="pref_subtitles_size_large">Groot</string>
-    <string name="pref_subtitles_size_very_large">Zeer groot</string>
     <string name="lbl_subtitle_background_color">Achtergrondkleur ondertiteling</string>
-    <string name="pref_subtitles_size_very_small">Zeer klein</string>
     <string name="prefer_exoplayer_ffmpeg">FFmpeg verkiezen voor afspelen geluid</string>
     <string name="prefer_exoplayer_ffmpeg_content">Gebruik FFmpeg om geluid te decoderen, zelfs als er platformcodecs beschikbaar zijn.</string>
     <string name="video_start_delay">Startvertraging video</string>
     <string name="segment_action_skip">Overslaan</string>
     <string name="segment_type_commercial">Reclame</string>
     <string name="segment_type_outro">Outro\'s</string>
-    <string name="segment_type_preview">Voorvertoningen</string>
+    <string name="segment_type_preview">Vooruitblikken</string>
     <string name="segment_type_recap">Terugblikken</string>
     <string name="segment_type_unknown">Onbekende segmenten</string>
     <string name="segment_action_nothing">Niets doen</string>
@@ -568,4 +563,6 @@
     <string name="pref_mediasegment_actions">Acties voor mediasegmenten</string>
     <string name="segment_action_ask_to_skip">Vragen om over te slaan</string>
     <string name="default_video_zoom">Standaard zoommodus</string>
+    <string name="preference_enable_trickplay">Trickplay in videospeler inschakelen</string>
+    <string name="skip_forward_length">Stapgrootte vooruitspringen</string>
 </resources>

@@ -1,8 +1,8 @@
 package org.jellyfin.androidtv.ui.preference.screen
 
 import android.text.format.Formatter
-import coil.ImageLoader
-import coil.annotation.ExperimentalCoilApi
+import coil3.ImageLoader
+import coil3.annotation.ExperimentalCoilApi
 import org.jellyfin.androidtv.BuildConfig
 import org.jellyfin.androidtv.R
 import org.jellyfin.androidtv.preference.SystemPreferences
@@ -48,6 +48,13 @@ class DeveloperPreferencesScreen : OptionsFragment() {
 
 					bind(userPreferences, UserPreferences.playbackRewriteVideoEnabled)
 				}
+			}
+
+			checkbox {
+				setTitle(R.string.preference_enable_trickplay)
+				setContent(R.string.enable_playback_module_description)
+
+				bind(userPreferences, UserPreferences.trickPlayEnabled)
 			}
 
 			checkbox {
