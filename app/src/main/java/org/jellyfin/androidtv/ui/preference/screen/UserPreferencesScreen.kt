@@ -9,6 +9,11 @@ import org.jellyfin.androidtv.ui.preference.dsl.optionsScreen
 class UserPreferencesScreen : OptionsFragment() {
 	override val screen by optionsScreen {
 		setTitle(R.string.settings_title)
+			link {
+				setTitle(R.string.pref_playback_advanced)
+				icon = R.drawable.ic_more
+				withFragment<PlaybackAdvancedPreferencesScreen>()
+			}
 
 		category {
 			link {
