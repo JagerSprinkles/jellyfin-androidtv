@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+
 plugins {
 	id("com.android.application")
 	kotlin("android")
@@ -14,10 +17,11 @@ android {
 		minSdk = libs.versions.android.minSdk.get().toInt()
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
 
+		val currentDateTime = SimpleDateFormat("yyyyMMdd-HHmm").format(Date())
 		// Release version
 		applicationId = "me.beans.jellyfork"
 //		versionName = project.getVersionName()
-		versionName = "0.42.0"
+		versionName = "0.42.1-$currentDateTime"
 		versionCode = getVersionCode(versionName!!)
 		setProperty("archivesBaseName", "jellyfin-androidtv-v$versionName")
 	}
