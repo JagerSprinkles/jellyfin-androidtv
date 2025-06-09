@@ -204,8 +204,8 @@
     <string name="too_many_errors">Çok fazla hata. Bırakılıyor</string>
     <string name="player_error">Oynatıcı hatasıyla karşılaşıldı. Yeniden denenecek…</string>
     <string name="seek_error">Gezinilemiyor</string>
-    <string name="msg_live_tv_prev">Önceki %1$d saati yükle\?</string>
-    <string name="msg_live_tv_next">Sıradaki %1$d saati yükle\?</string>
+    <string name="msg_live_tv_prev">Önceki %1$d saati yükle?</string>
+    <string name="msg_live_tv_next">Sıradaki %1$d saati yükle?</string>
     <string name="lbl_load_guide_data">Rehber verilerini yükle</string>
     <string name="episode_missing_message_2">Bu bölüm kütüphanenizde eksik. Oynatma duracak.</string>
     <string name="episode_missing_message">Bu bölüm kütüphanenizde eksik. Bunu atlayıp bir sonrakine geçmek ister misiniz?</string>
@@ -572,4 +572,12 @@
     <string name="runtime_minutes">%1$dd</string>
     <string name="pref_report_device_profile_summary">Oynatma kapasiteleri hakkında bilgileri içeren bir sorun giderme belgesini Jellyfin sunucusuna yükle</string>
     <string name="pref_report_device_profile_failure">Belge gönderilemedi. Jellyfin sunucunuz istemci günlüklerine izin vermiyor olabilir.</string>
+    <string name="preference_enable_libass">Gelişmiş SubStation Alpha altyazı istemcisi işleme özelliğini etkinleştir</string>
+    <string name="fast_forward">İleriye sar</string>
+    <string name="rewind">Geri sar</string>
+    <string name="indicator_subtitles_hearing_impaired">İşitme engelliler için altyazı</string>
+    <string name="speech_error_no_permission">Mikrofonu kullanmak için izin yok. Lütfen sistem ayarlarından etkinleştirin.</string>
+    <string name="speech_error_unknown">Ses tanıma sırasında beklenmeyen bir hata oluştu.</string>
+    <string name="lbl_from_beginning">Baştan oynat</string>
+    <string name="speech_error_unavailable">Ses tanıma özelliği cihazınızda kullanılamıyor.</string>
 </resources>

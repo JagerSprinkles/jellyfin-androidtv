@@ -9,14 +9,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.media3.datasource.HttpDataSource
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import okhttp3.OkHttpClient
-import org.jellyfin.androidtv.BuildConfig
 import org.jellyfin.androidtv.R
 import org.jellyfin.androidtv.preference.UserPreferences
 import org.jellyfin.androidtv.preference.UserSettingPreferences
 import org.jellyfin.androidtv.ui.browsing.MainActivity
-import org.jellyfin.androidtv.ui.playback.GarbagePlaybackLauncher
 import org.jellyfin.androidtv.ui.playback.MediaManager
-import org.jellyfin.androidtv.ui.playback.RewritePlaybackLauncher
+import org.jellyfin.androidtv.ui.playback.PlaybackLauncher
 import org.jellyfin.androidtv.ui.playback.VideoQueueManager
 import org.jellyfin.androidtv.ui.playback.rewrite.RewriteMediaManager
 import org.jellyfin.androidtv.util.profile.createDeviceProfile
@@ -26,7 +24,6 @@ import org.jellyfin.playback.media3.exoplayer.ExoPlayerOptions
 import org.jellyfin.playback.media3.exoplayer.exoPlayerPlugin
 import org.jellyfin.playback.media3.session.MediaSessionOptions
 import org.jellyfin.playback.media3.session.media3SessionPlugin
-import org.jellyfin.sdk.api.client.ApiClient
 import org.jellyfin.sdk.api.client.HttpClientOptions
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.scope.Scope
@@ -40,13 +37,7 @@ val playbackModule = module {
 	single { VideoQueueManager() }
 	single<MediaManager> { RewriteMediaManager(get(), get(), get(), get()) }
 
-	factory {
-		val preferences = get<UserPreferences>()
-		val useRewrite = preferences[UserPreferences.playbackRewriteVideoEnabled] && BuildConfig.DEVELOPMENT
-
-		if (useRewrite) RewritePlaybackLauncher()
-		else GarbagePlaybackLauncher(get())
-	}
+	single { PlaybackLauncher(get(), get(), get(), get()) }
 
 	// OkHttp data source using OkHttpFactory from SDK
 	single<HttpDataSource.Factory> {
@@ -75,13 +66,14 @@ fun Scope.createPlaybackManager() = playbackManager(androidContext()) {
 			notificationChannelId,
 			NotificationManager.IMPORTANCE_LOW
 		)
+		channel.setShowBadge(false)
 		NotificationManagerCompat.from(get()).createNotificationChannel(channel)
 	}
 
 	val userPreferences = get<UserPreferences>()
-	val api = get<ApiClient>()
 	val exoPlayerOptions = ExoPlayerOptions(
 		preferFfmpeg = userPreferences[UserPreferences.preferExoPlayerFfmpeg],
+		enableLibass = userPreferences[UserPreferences.assDirectPlay],
 		enableDebugLogging = userPreferences[UserPreferences.debuggingEnabled],
 		baseDataSourceFactory = get<HttpDataSource.Factory>(),
 	)

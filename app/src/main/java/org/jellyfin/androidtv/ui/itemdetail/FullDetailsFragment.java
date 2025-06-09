@@ -57,12 +57,10 @@ import org.jellyfin.androidtv.ui.itemhandling.BaseRowItem;
 import org.jellyfin.androidtv.ui.itemhandling.ItemLauncher;
 import org.jellyfin.androidtv.ui.itemhandling.ItemRowAdapter;
 import org.jellyfin.androidtv.ui.livetv.TvManager;
-import org.jellyfin.androidtv.ui.navigation.Destination;
 import org.jellyfin.androidtv.ui.navigation.Destinations;
 import org.jellyfin.androidtv.ui.navigation.NavigationRepository;
 import org.jellyfin.androidtv.ui.playback.MediaManager;
 import org.jellyfin.androidtv.ui.playback.PlaybackLauncher;
-import org.jellyfin.androidtv.ui.playback.VideoQueueManager;
 import org.jellyfin.androidtv.ui.presentation.CardPresenter;
 import org.jellyfin.androidtv.ui.presentation.CustomListRowPresenter;
 import org.jellyfin.androidtv.ui.presentation.InfoCardPresenter;
@@ -145,7 +143,6 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
     private final Lazy<DataRefreshService> dataRefreshService = inject(DataRefreshService.class);
     private final Lazy<BackgroundService> backgroundService = inject(BackgroundService.class);
     final Lazy<MediaManager> mediaManager = inject(MediaManager.class);
-    final Lazy<VideoQueueManager> videoQueueManager = inject(VideoQueueManager.class);
     private final Lazy<MarkdownRenderer> markdownRenderer = inject(MarkdownRenderer.class);
     private final Lazy<CustomMessageRepository> customMessageRepository = inject(CustomMessageRepository.class);
     final Lazy<NavigationRepository> navigationRepository = inject(NavigationRepository.class);
@@ -419,7 +416,7 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
 
             mDetailsOverviewRow = new MyDetailsOverviewRow(item);
 
-            String primaryImageUrl = imageHelper.getValue().getLogoImageUrl(mBaseItem, 600, true);
+            String primaryImageUrl = imageHelper.getValue().getLogoImageUrl(mBaseItem, 600);
             if (primaryImageUrl == null) {
                 primaryImageUrl = imageHelper.getValue().getPrimaryImageUrl(mBaseItem, false, null, posterHeight);
             }
@@ -772,14 +769,14 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
         mResumeButton = TextUnderButton.create(requireContext(), R.drawable.ic_resume, buttonSize, 2, buttonLabel, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FullDetailsFragmentHelperKt.resumePlayback(FullDetailsFragment.this);
+                FullDetailsFragmentHelperKt.resumePlayback(FullDetailsFragment.this, v);
             }
         });
 
         if (BaseItemExtensionsKt.canPlay(baseItem)) {
             mDetailsOverviewRow.addAction(mResumeButton);
-            boolean resumeButtonVisible = (baseItem.getType() == BaseItemKind.SERIES && !mBaseItem.getUserData().getPlayed()) || (JavaCompat.getCanResume(mBaseItem));
-            mResumeButton.setVisibility(resumeButtonVisible ? View.VISIBLE : View.GONE);
+            boolean isSeries = baseItem.getType() == BaseItemKind.SERIES;
+            boolean isStarted = baseItem.getUserData().getPlayedPercentage() != null && baseItem.getUserData().getPlayedPercentage() > 0;
 
             playButton = TextUnderButton.create(requireContext(), R.drawable.ic_play, buttonSize, 2, getString(BaseItemExtensionsKt.isLiveTv(mBaseItem) ? R.string.lbl_tune_to_channel : Utils.getSafeValue(mBaseItem.isFolder(), false) ? R.string.lbl_play_all : R.string.lbl_play), new View.OnClickListener() {
                 @Override
@@ -787,13 +784,15 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
                     play(mBaseItem, 0, false);
                 }
             });
-
             mDetailsOverviewRow.addAction(playButton);
 
-            if (resumeButtonVisible) {
-                mResumeButton.requestFocus();
+            if (isSeries && !isStarted) {
+                FullDetailsFragmentHelperKt.getNextUpEpisode(this, nextUpEpisode -> {
+                    handleResumeButtonAndFocus(nextUpEpisode);
+                    return null;
+                });
             } else {
-                playButton.requestFocus();
+                handleResumeButtonAndFocus(null);
             }
 
             boolean isMusic = baseItem.getType() == BaseItemKind.MUSIC_ALBUM
@@ -1066,6 +1065,24 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
             showMoreButtonIfNeeded();  //Episodes check for previous and then call this above
     }
 
+    private void handleResumeButtonAndFocus(BaseItemDto nextUpEpisode) {
+        boolean isSeries = mBaseItem.getType() == BaseItemKind.SERIES;
+        boolean isFinished = mBaseItem.getUserData().getPlayed();
+        boolean isStarted = mBaseItem.getUserData().getPlayedPercentage() != null && mBaseItem.getUserData().getPlayedPercentage() > 0;
+        if (!isStarted && nextUpEpisode != null) {
+            isStarted = nextUpEpisode.getUserData().getPlaybackPositionTicks() > 0;
+        }
+
+        boolean resumeButtonVisible = (isSeries && isStarted && !isFinished) || (JavaCompat.getCanResume(mBaseItem));
+        mResumeButton.setVisibility(resumeButtonVisible ? View.VISIBLE : View.GONE);
+
+        if (resumeButtonVisible) {
+            mResumeButton.requestFocus();
+        } else {
+            playButton.requestFocus();
+        }
+    }
+
     private void addVersionsMenu(View v) {
         PopupMenu menu = new PopupMenu(requireContext(), v, Gravity.END);
 
@@ -1202,13 +1219,7 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
                     return;
                 }
 
-                if (item.getType() == BaseItemKind.MUSIC_ARTIST) {
-                    mediaManager.getValue().playNow(requireContext(), response, 0, shuffle);
-                } else {
-                    videoQueueManager.getValue().setCurrentVideoQueue(response);
-                    Destination destination = KoinJavaComponent.<PlaybackLauncher>get(PlaybackLauncher.class).getPlaybackDestination(item.getType(), pos);
-                    navigationRepository.getValue().navigate(destination);
-                }
+                KoinJavaComponent.<PlaybackLauncher>get(PlaybackLauncher.class).launch(getContext(), response, pos, false, 0, shuffle);
             }
         });
     }
@@ -1216,8 +1227,6 @@ public class FullDetailsFragment extends Fragment implements RecordingIndicatorV
     void play(final List<BaseItemDto> items, final int pos, final boolean shuffle) {
         if (items.isEmpty()) return;
         if (shuffle) Collections.shuffle(items);
-        videoQueueManager.getValue().setCurrentVideoQueue(items);
-        Destination destination = KoinJavaComponent.<PlaybackLauncher>get(PlaybackLauncher.class).getPlaybackDestination(items.get(0).getType(), pos);
-        navigationRepository.getValue().navigate(destination);
+        KoinJavaComponent.<PlaybackLauncher>get(PlaybackLauncher.class).launch(getContext(), items, pos);
     }
 }

@@ -499,7 +499,7 @@
         <item quantity="other">%1$s 电影</item>
     </plurals>
     <plurals name="songs">
-        <item quantity="other">%1$s歌曲</item>
+        <item quantity="other">%1$s 歌曲</item>
     </plurals>
     <plurals name="albums">
         <item quantity="other">%1$s 合集</item>
@@ -562,4 +562,12 @@
     <string name="pref_report_device_profile_title">向服务器回报播放能力</string>
     <string name="pref_report_device_profile_summary">上传含有播放能力的疑难排解文件至伺服器</string>
     <string name="pref_report_device_profile_success">文件已提交为 %1$s</string>
+    <string name="indicator_subtitles_hearing_impaired">SDH</string>
+    <string name="fast_forward">快进</string>
+    <string name="rewind">快退</string>
+    <string name="preference_enable_libass">启用高级 SubStation Alpha 字幕客户端渲染</string>
+    <string name="speech_error_unavailable">您的设备无法使用语音识别。</string>
+    <string name="speech_error_no_permission">无权使用麦克风。请在系统设置中启用。</string>
+    <string name="lbl_from_beginning">从头开始播放</string>
+    <string name="speech_error_unknown">语音识别过程中出现意外错误。</string>
 </resources>
