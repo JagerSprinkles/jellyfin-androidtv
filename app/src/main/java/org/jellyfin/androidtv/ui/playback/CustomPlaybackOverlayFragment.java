@@ -221,8 +221,10 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
             return;
         }
 
-        if (playbackControllerContainer.getValue().getPlaybackController() != null) {
-            playbackControllerContainer.getValue().getPlaybackController().init(new VideoManager((requireActivity()), view, helper), this);
+        PlaybackController playbackController = playbackControllerContainer.getValue().getPlaybackController();
+
+        if (playbackController != null) {
+            playbackController.init(new VideoManager(requireActivity(), view, helper), this);
         }
     }
 
@@ -439,21 +441,25 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
                 return false;
             }
 
-            if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
-                playbackControllerContainer.getValue().getPlaybackController().play(0);
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
-                playbackControllerContainer.getValue().getPlaybackController().pause();
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
-                playbackControllerContainer.getValue().getPlaybackController().playPause();
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_BUTTON_R1 || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
-                playbackControllerContainer.getValue().getPlaybackController().fastForward();
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || keyCode == KeyEvent.KEYCODE_BUTTON_L1 || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
-                playbackControllerContainer.getValue().getPlaybackController().rewind();
-                return true;
+            PlaybackController playbackController = playbackControllerContainer.getValue().getPlaybackController();
+
+            if (playbackController != null) {
+                if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+                    playbackController.play(0);
+                    return true;
+                } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PAUSE) {
+                    playbackController.pause();
+                    return true;
+                } else if (keyCode == KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE) {
+                    playbackController.playPause();
+                    return true;
+                } else if (keyCode == KeyEvent.KEYCODE_MEDIA_FAST_FORWARD || keyCode == KeyEvent.KEYCODE_BUTTON_R1 || keyCode == KeyEvent.KEYCODE_BUTTON_R2) {
+                    playbackController.fastForward();
+                    return true;
+                } else if (keyCode == KeyEvent.KEYCODE_MEDIA_REWIND || keyCode == KeyEvent.KEYCODE_BUTTON_L1 || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+                    playbackController.rewind();
+                    return true;
+                }
             }
         }
 
@@ -482,7 +488,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
                 if (binding.skipOverlay.getVisible()) {
                     // Hide without doing anything
                     if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_BUTTON_B || keyCode == KeyEvent.KEYCODE_ESCAPE) {
-                        binding.skipOverlay.setTargetPositionMs(null);
+                        clearSkipOverlay();
                         return true;
                     }
 
@@ -490,7 +496,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
                     if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER) {
                         playbackControllerContainer.getValue().getPlaybackController().seek(binding.skipOverlay.getTargetPositionMs(), true);
                         leanbackOverlayFragment.setShouldShowOverlay(false);
-                        if (binding != null) binding.skipOverlay.setTargetPositionMs(null);
+                        if (binding != null) clearSkipOverlay();
                         return true;
                     }
                 }
@@ -659,8 +665,7 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         super.onResume();
 
         // Close player when resuming without a valid playback controller
-        PlaybackController playbackController = playbackControllerContainer.getValue().getPlaybackController();
-        if (playbackController == null || !playbackController.hasFragment()) {
+        if (playbackControllerContainer.getValue().getPlaybackController() == null || !playbackControllerContainer.getValue().getPlaybackController().hasFragment()) {
             closePlayer();
 
             return;
@@ -1268,6 +1273,10 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         }
     }
 
+    public void clearSkipOverlay() {
+        binding.skipOverlay.setTargetPositionMs(null);
+    }
+
     private void prepareChapterAdapter() {
         BaseItemDto item = playbackControllerContainer.getValue().getPlaybackController().getCurrentlyPlayingItem();
         List<ChapterInfo> chapters = item.getChapters();
@@ -1313,6 +1322,13 @@ public class CustomPlaybackOverlayFragment extends Fragment implements LiveTvGui
         navigating = true;
 
         navigationRepository.getValue().navigate(Destinations.INSTANCE.nextUp(id), true);
+    }
+
+    public void showStillWatching(@NonNull UUID id) {
+        if (navigating) return;
+        navigating = true;
+
+        navigationRepository.getValue().navigate(Destinations.INSTANCE.stillWatching(id), true);
     }
 
     @Override
