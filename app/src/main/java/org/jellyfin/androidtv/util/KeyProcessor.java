@@ -100,7 +100,7 @@ public class KeyProcessor {
                                 createPlayMenu(rowItem, MediaType.AUDIO.equals(item.getMediaType()), activity);
                                 return true;
                             case PHOTO:
-                                navigationRepository.getValue().navigate(Destinations.INSTANCE.pictureViewer(
+                                navigationRepository.getValue().navigate(Destinations.INSTANCE.photoPlayer(
                                         rowItem.getBaseItem().getId(),
                                         true,
                                         ItemSortBy.SORT_NAME,
@@ -292,14 +292,16 @@ public class KeyProcessor {
                     playbackHelper.getValue().retrieveAndPlay(item.getId(), true, activity);
                     return true;
                 case MENU_ADD_QUEUE:
-                    playbackHelper.getValue().getItemsToPlay(activity, item, false, false, new Response<List<BaseItemDto>>() {
+                    playbackHelper.getValue().getItemsToPlay(activity, item, false, false, new Response<List<BaseItemDto>>(activity.getLifecycle()) {
                         @Override
                         public void onResponse(List<BaseItemDto> response) {
+                            if (!isActive()) return;
                             mediaManager.getValue().addToAudioQueue(response);
                         }
 
                         @Override
                         public void onError(Exception exception) {
+                            if (!isActive()) return;
                             Utils.showToast(activity, R.string.msg_cannot_play_time);
                         }
                     });

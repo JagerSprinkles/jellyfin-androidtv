@@ -23,7 +23,6 @@ android {
 //		versionName = project.getVersionName()
 		versionName = "0.42.1-$currentDateTime"
 		versionCode = getVersionCode(versionName!!)
-		setProperty("archivesBaseName", "jellyfin-androidtv-v$versionName")
 	}
 
 	buildFeatures {
@@ -37,7 +36,7 @@ android {
 	}
 
 	buildTypes {
-		val release by getting {
+		release {
 			isMinifyEnabled = false
 
 			// Set package names used in various XML files
@@ -51,7 +50,7 @@ android {
 			buildConfigField("boolean", "DEVELOPMENT", "false")
 		}
 
-		val debug by getting {
+		debug {
 			// Use different application id to run release and debug at the same time
 			applicationIdSuffix = ".debug"
 
@@ -79,7 +78,9 @@ android {
 	}
 }
 
-val versionTxt by tasks.registering {
+base.archivesName.set("jellyfin-androidtv-v${project.getVersionName()}")
+
+tasks.register("versionTxt") {
 	val path = layout.buildDirectory.asFile.get().resolve("version.txt")
 
 	doLast {
@@ -140,7 +141,6 @@ dependencies {
 	implementation(libs.androidx.media3.exoplayer.hls)
 	implementation(libs.androidx.media3.ui)
 	implementation(libs.jellyfin.androidx.media3.ffmpeg.decoder)
-	implementation(libs.libass.media3)
 
 	// Markdown
 	implementation(libs.bundles.markwon)
